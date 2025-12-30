@@ -403,7 +403,7 @@ class HealthChecker:
 def main():
     """Main function for health check script."""
     parser = argparse.ArgumentParser(
-        description="Health Check Script for Autonomous Multi-Agent Red/Blue Team Simulation System"
+        description="Health Check Script for Autonomous Multi-Agent Red/Blue Team Simulation System",
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     

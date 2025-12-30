@@ -9,8 +9,4 @@ from .detection_agent import DetectionAgent
 from .response_agent import ResponseAgent
 from .threat_intel_agent import ThreatIntelAgent
 
-__all__ = [
-    "DetectionAgent",
-    "ResponseAgent", 
-    "ThreatIntelAgent"
-]
+__all__ = ["DetectionAgent", "ResponseAgent", "ThreatIntelAgent"]

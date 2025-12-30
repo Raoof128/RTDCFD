@@ -5,9 +5,12 @@ This package contains SOCI Act critical infrastructure scenarios for the
 autonomous multi-agent simulation system.
 """
 
-from .soci_energy_grid import SOCEnergyGridScenario, create_scenario as create_energy_scenario
-from .soci_telco_network import SOCTelcoNetworkScenario, create_scenario as create_telco_scenario
-from .soci_water_system import SOCIWaterSystemScenario, create_scenario as create_water_scenario
+from .soci_energy_grid import SOCEnergyGridScenario
+from .soci_energy_grid import create_scenario as create_energy_scenario
+from .soci_telco_network import SOCTelcoNetworkScenario
+from .soci_telco_network import create_scenario as create_telco_scenario
+from .soci_water_system import SOCIWaterSystemScenario
+from .soci_water_system import create_scenario as create_water_scenario
 
 # Scenario registry
 SCENARIOS = {
@@ -23,8 +26,8 @@ SCENARIOS = {
             "duration_hours": 72,
             "red_team_agents": 4,
             "blue_team_agents": 3,
-            "compliance_frameworks": ["SOCI_Act", "ASD_Essential_Eight", "Privacy_Act"]
-        }
+            "compliance_frameworks": ["SOCI_Act", "ASD_Essential_Eight", "Privacy_Act"],
+        },
     },
     "soci_telco_network": {
         "class": SOCTelcoNetworkScenario,
@@ -38,8 +41,13 @@ SCENARIOS = {
             "duration_hours": 72,
             "red_team_agents": 4,
             "blue_team_agents": 3,
-            "compliance_frameworks": ["SOCI_Act", "ASD_Essential_Eight", "Privacy_Act", "Telecommunications_Act"]
-        }
+            "compliance_frameworks": [
+                "SOCI_Act",
+                "ASD_Essential_Eight",
+                "Privacy_Act",
+                "Telecommunications_Act",
+            ],
+        },
     },
     "soci_water_system": {
         "class": SOCIWaterSystemScenario,
@@ -53,9 +61,14 @@ SCENARIOS = {
             "duration_hours": 72,
             "red_team_agents": 4,
             "blue_team_agents": 3,
-            "compliance_frameworks": ["SOCI_Act", "ASD_Essential_Eight", "Privacy_Act", "Water_Regulations"]
-        }
-    }
+            "compliance_frameworks": [
+                "SOCI_Act",
+                "ASD_Essential_Eight",
+                "Privacy_Act",
+                "Water_Regulations",
+            ],
+        },
+    },
 }
 
 
@@ -83,7 +96,7 @@ def create_scenario(scenario_name: str):
 def validate_all_scenarios() -> dict:
     """Validate all scenarios and return results."""
     validation_results = {}
-    
+
     for scenario_name in SCENARIOS:
         try:
             scenario = create_scenario(scenario_name)
@@ -93,15 +106,15 @@ def validate_all_scenarios() -> dict:
                 "scenario_valid": False,
                 "validation_errors": [f"Scenario creation failed: {str(e)}"],
                 "warnings": [],
-                "recommendations": []
+                "recommendations": [],
             }
-    
+
     return validation_results
 
 
 __all__ = [
     "SOCEnergyGridScenario",
-    "SOCTelcoNetworkScenario", 
+    "SOCTelcoNetworkScenario",
     "SOCIWaterSystemScenario",
     "create_energy_scenario",
     "create_telco_scenario",
@@ -110,5 +123,5 @@ __all__ = [
     "get_scenario_metadata",
     "create_scenario",
     "validate_all_scenarios",
-    "SCENARIOS"
+    "SCENARIOS",
 ]

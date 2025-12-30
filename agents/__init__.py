@@ -5,9 +5,14 @@ This package contains all agents for the autonomous multi-agent simulation syste
 organized into red team and blue team categories.
 """
 
-from .base_agent import BaseAgent, AgentMessage, AgentState
-from .red_team import ReconAgent, SocialEngineeringAgent, ExploitationAgent, LateralMovementAgent
+from .base_agent import AgentMessage, AgentState, BaseAgent
 from .blue_team import DetectionAgent, ResponseAgent, ThreatIntelAgent
+from .red_team import (
+    ExploitationAgent,
+    LateralMovementAgent,
+    ReconAgent,
+    SocialEngineeringAgent,
+)
 
 __all__ = [
     "BaseAgent",
@@ -15,9 +20,9 @@ __all__ = [
     "AgentState",
     "ReconAgent",
     "SocialEngineeringAgent",
-    "ExploitationAgent", 
+    "ExploitationAgent",
     "LateralMovementAgent",
     "DetectionAgent",
     "ResponseAgent",
-    "ThreatIntelAgent"
+    "ThreatIntelAgent",
 ]
