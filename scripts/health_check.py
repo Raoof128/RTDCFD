@@ -394,7 +394,7 @@ class HealthChecker:
         else:
             print(f"\n⚠️  SYSTEM HAS {self.error_count} ISSUES THAT NEED ATTENTION")
         
-        if self.warnings > 0:
+        if self.warning_count > 0:
             print(f"\n⚠️  {self.warning_count} warnings were found - review recommended")
         
         print("\n" + "="*60)

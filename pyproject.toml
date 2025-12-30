@@ -100,59 +100,32 @@ Changelog = "https://github.com/example/autonomous-multi-agent-simulation/blob/m
 
 [project.scripts]
 # Main scripts
-main = "python main.py"
-validate = "python main.py --validate-config"
-test = "pytest"
-lint = "flake8 agents/ orchestration/ utils/ scenarios/"
-format = "black agents/ orchestration/ utils/ scenarios/"
-type-check = "mypy agents/ orchestration/ utils/ scenarios/"
-security-check = "bandit -r agents/ orchestration/ utils/ scenarios/"
-coverage = "pytest --cov=agents --cov=orchestration --cov=utils --cov=scenarios --cov-report=html"
+main = "main:main"
+validate = "main:validate_config"
+test = "pytest:main"
 
-# Development scripts
-dev-install = "pip install -e .[dev]"
-dev-test = "pytest -v --cov=agents --cov=orchestration --cov=utils --cov=scenarios"
-dev-lint = "flake8 agents/ orchestration/ utils/ scenarios/ && mypy agents/ orchestration/ utils/ scenarios/"
-dev-format = "black agents/ orchestration/ utils/ scenarios/ && isort agents/ orchestration/ utils/ scenarios/"
-dev-security = "bandit -r agents/ orchestration/ utils/ scenarios/ && safety check"
-dev-docs = "sphinx-build -b html docs/ docs/_build/html"
+# Agent scripts
+run-agent = "agents.cli:run_agent"
+list-agents = "agents.cli:list_agents"
+agent-status = "agents.cli:agent_status"
 
 # Scenario scripts
-scenarios = "python -c 'import scenarios; print(scenarios.get_available_scenarios())'"
-validate-scenarios = "python -c 'import scenarios; scenarios.validate_all_scenarios()'"
+scenarios = "scenarios.cli:list_scenarios"
+validate-scenarios = "scenarios.cli:validate_all_scenarios"
+run-scenario = "scenarios.cli:run_scenario"
 
 # Dashboard scripts
-dashboard = "streamlit run dashboard/streamlit_ui.py"
-dashboard-dev = "STREAMLIT_SERVER_PORT=8501 streamlit run dashboard/streamlit_ui.py"
+dashboard = "dashboard.cli:run_dashboard"
+dashboard-dev = "dashboard.cli:run_dashboard_dev"
 
-# Testing scripts
-test-unit = "pytest tests/test_scenarios.py tests/test_basic_functionality.py"
-test-integration = "pytest tests/test_config.py"
-test-all = "pytest tests/ -v"
-test-coverage = "pytest --cov=agents --cov=orchestration --cov=utils --cov=scenarios --cov-report=term-missing"
-
-# Quality scripts
-quality-check = "python -m py_compile agents/**/*.py orchestration/**/*.py utils/**/*.py scenarios/**/*.py dashboard/**/*.py"
-quality-format = "black --check agents/ orchestration/ utils/ scenarios/ dashboard/"
-quality-imports = "isort --check-only agents/ orchestration/ utils/ scenarios/ dashboard/"
-
-# Security scripts
-security-audit = "bandit -r agents/ orchestration/ utils/ scenarios/ && safety check && pip-audit"
-security-deps = "pip-audit --requirement requirements.txt"
-
-# Build scripts
-build = "python -m build"
-dist = "python -m twine check dist/*"
-
-# Documentation scripts
-docs-build = "sphinx-build -b html docs/ docs/_build/html"
-docs-serve = "python -m http.server 8000 --directory docs/_build/html"
-docs-clean = "rm -rf docs/_build/"
+# MCP scripts
+mcp-server = "mcp_servers.cli:run_server"
+mcp-status = "mcp_servers.cli:status"
 
 # Utility scripts
-clean = "find . -type d -name __pycache__ -delete && find . -type f -name '*.pyc' -delete"
-setup-dev = "python -m venv venv && source venv/bin/activate && pip install -e .[dev]"
-install-hooks = "pre-commit install"
+health-check = "scripts.health_check:main"
+setup-dev = "scripts.setup:main"
+run-tests = "scripts.run_tests:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
