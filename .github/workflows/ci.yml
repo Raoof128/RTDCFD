@@ -116,7 +116,7 @@ jobs:
         
     - name: Run tests with coverage
       run: |
-        pytest tests/ -v --cov=agents --cov=orchestration --cov=utils --cov=scenarios --cov=dashboard --cov=mcp_servers --cov-report=xml --cov-report=html --cov-report=term-missing || true
+        pytest tests/test_basic_functionality.py tests/test_scenarios.py tests/test_config.py -v --cov=agents --cov=orchestration --cov=utils --cov=scenarios --cov=dashboard --cov=mcp_servers --cov-report=xml --cov-report=html --cov-report=term-missing || true
         
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3

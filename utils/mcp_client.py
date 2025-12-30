@@ -13,8 +13,27 @@ from typing import Any, Callable, Dict, List, Optional
 
 import websockets
 
-from agents.base_agent import AgentMessage
 from utils.logging_handler import get_logger
+
+
+# Define AgentMessage locally to avoid circular imports
+class AgentMessage:
+    """Agent message for inter-agent communication"""
+
+    def __init__(
+        self,
+        sender_id: str,
+        receiver_id: str,
+        message_type: str,
+        content: Dict[str, Any],
+    ):
+        self.sender_id = sender_id
+        self.receiver_id = receiver_id
+        self.message_type = message_type
+        self.content = content
+        self.timestamp = datetime.now()
+        self.message_id = str(uuid.uuid4())
+
 
 logger = get_logger(__name__)
 
