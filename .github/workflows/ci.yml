@@ -49,7 +49,7 @@ jobs:
       run: bandit -r agents/ orchestration/ utils/ scenarios/ dashboard/ mcp_servers/ -f json -o bandit-report.json || true
       
     - name: Upload bandit report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: bandit-report
@@ -82,7 +82,7 @@ jobs:
       run: semgrep --config=.semgrep.yml --json --output semgrep-report.json agents/ orchestration/ utils/ scenarios/ dashboard/ mcp_servers/ || true
       
     - name: Upload security reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: security-reports
@@ -127,7 +127,7 @@ jobs:
         name: codecov-umbrella
         
     - name: Upload coverage reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: coverage-reports-${{ matrix.python-version }}
@@ -193,7 +193,7 @@ jobs:
         sphinx-build -b linkcheck docs/ docs/_build/linkcheck || echo "Link check completed with warnings"
         
     - name: Upload documentation
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: documentation
@@ -230,7 +230,7 @@ jobs:
         twine check dist/* || echo "Package check completed with warnings"
         
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: package
@@ -306,7 +306,7 @@ jobs:
         pytest --benchmark-only tests/ --benchmark-json=benchmark.json || echo "Performance tests completed"
         
     - name: Upload benchmark results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: benchmark-results
@@ -329,13 +329,13 @@ jobs:
         python-version: ${{ env.PYTHON_VERSION }}
         
     - name: Download build artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: package
         path: dist/
         
     - name: Download documentation
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: documentation
         path: docs/_build/
