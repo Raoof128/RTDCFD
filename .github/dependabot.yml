@@ -11,11 +11,6 @@ updates:
       day: "monday"
       time: "09:00"
     open-pull-requests-limit: 5
-    reviewers:
-      - "maintainer-1"
-      - "maintainer-2"
-    assignees:
-      - "maintainer-1"
     commit-message:
       prefix: "deps"
       include: "scope"
@@ -34,11 +29,6 @@ updates:
       day: "monday"
       time: "09:00"
     open-pull-requests-limit: 3
-    reviewers:
-      - "maintainer-1"
-      - "maintainer-2"
-    assignees:
-      - "maintainer-1"
     commit-message:
       prefix: "ci"
       include: "scope"
@@ -56,65 +46,12 @@ updates:
       day: "monday"
       time: "09:00"
     open-pull-requests-limit: 2
-    reviewers:
-      - "maintainer-1"
-      - "maintainer-2"
-    assignees:
-      - "maintainer-1"
     commit-message:
       prefix: "docker"
       include: "scope"
     labels:
       - "docker"
       - "dependencies"
-    allow:
-      - dependency-type: "production"
-
-# Security vulnerability alerts
-version: 2
-updates:
-  # Enable security updates for Python packages
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "daily"
-      time: "09:00"
-    open-pull-requests-limit: 10
-    reviewers:
-      - "security-team"
-      - "maintainer-1"
-    assignees:
-      - "security-team"
-    commit-message:
-      prefix: "security"
-      include: "scope"
-    labels:
-      - "security"
-      - "dependencies"
-      - "python"
-    allow:
-      - dependency-type: "production"
-      - dependency-type: "development"
-
-  # Enable security updates for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "daily"
-      time: "09:00"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "security-team"
-      - "maintainer-1"
-    assignees:
-      - "security-team"
-    commit-message:
-      prefix: "security"
-      include: "scope"
-    labels:
-      - "security"
-      - "github-actions"
-      - "ci"
     allow:
       - dependency-type: "production"
 
@@ -164,33 +101,3 @@ ignore:
     update-types: ["version-update:semver-patch"]
   - dependency-name: "anthropic"
     update-types: ["version-update:semver-patch"]
-
-# Review requirements
-reviewers:
-  - "security-team"
-  - "maintainer-1"
-  - "maintainer-2"
-
-# Assignees for different types of updates
-assignees:
-  security:
-    - "security-team"
-  dependencies:
-    - "maintainer-1"
-  ci:
-    - "maintainer-2"
-
-# Labels for different types of updates
-labels:
-  security:
-    - "security"
-    - "dependencies"
-  dependencies:
-    - "dependencies"
-    - "python"
-  ci:
-    - "github-actions"
-    - "ci"
-  docker:
-    - "docker"
-    - "dependencies"
