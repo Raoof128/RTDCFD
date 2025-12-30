@@ -1,0 +1,82 @@
+[MASTER_FILES]
+setup.py
+pyproject.toml
+
+[FORMAT]
+max-line-length = 88
+indent-string = 'spaces'
+indent-after-paren = 4
+multi-line-summary-style = "first line"
+
+[BASIC]
+good-names = ["i", "j", "k", "ex", "Run", "_"]
+good-names-rgxs = "^[_a-z0-9]+_?$"
+variable-naming-style = "snake_case"
+function-naming-style = "snake_case"
+argument-naming-style = "snake_case"
+attr-naming-style = "snake_case"
+method-naming-style = "snake_case"
+class-naming-style = "PascalCase"
+module-naming-style = "snake_case"
+const-naming-style = "UPPER_CASE"
+class-attribute-naming-style = "snake_case"
+
+[DESIGN]
+max-args = 10
+max-locals = 15
+max-returns = 6
+max-branches = 12
+max-statements = 50
+max-parents = 7
+max-attributes = 20
+max-public-methods = 20
+min-public-methods = 2
+max-bool-expr = 5
+
+[TYPECHECK]
+generated-members = "numpy.*,torch.*,pandas.*"
+ignore-missing-imports = true
+ignore-on-opaque-inference = true
+
+[SIMILARITIES]
+min-similarity-lines = 4
+ignore-comments = true
+ignore-docstrings = true
+ignore-imports = true
+
+[MESSAGES CONTROL]
+disable = "missing-docstring,too-many-arguments,too-many-locals,too-many-branches,too-many-statements,too-many-attributes,too-many-public-methods,too-few-public-methods"
+
+[REPORTS]
+output-format = "colorized"
+reports = "yes"
+score = "yes"
+
+[REFACTORING]
+max-nesting-blocks = 5
+never-returning-members = "yes"
+
+[LOGGING]
+logging-format-style = "new"
+logging-modules = "logging,logging.handlers"
+logging-fstring-interpolation = "allow"
+
+[STRING]
+check-quote-consistency = true
+
+[VARIABLES]
+dummy-variables-rgx = "^_"
+dummy-variables-rgx = "^dummy_"
+
+[IMPORTS]
+allow-wildcard-with-all = "no"
+allow-wildcard-without-all = "no"
+
+[CLASSES]
+defining-for-methods = "no"
+exclude-protected = "yes"
+valid-metaclass-classmethod-first-arg = "cls"
+valid-classmethod-first-arg = "cls"
+
+[EXCEPTIONS]
+overgeneral-exceptions = ["builtins.Exception", "builtins.BaseException"]

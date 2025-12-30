@@ -1,0 +1,196 @@
+# GitHub Dependabot configuration
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # Enable version updates for Python packages
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "maintainer-1"
+      - "maintainer-2"
+    assignees:
+      - "maintainer-1"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "python"
+    allow:
+      - dependency-type: "production"
+      - dependency-type: "development"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "maintainer-1"
+      - "maintainer-2"
+    assignees:
+      - "maintainer-1"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "github-actions"
+      - "ci"
+    allow:
+      - dependency-type: "production"
+
+  # Enable version updates for Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 2
+    reviewers:
+      - "maintainer-1"
+      - "maintainer-2"
+    assignees:
+      - "maintainer-1"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
+    labels:
+      - "docker"
+      - "dependencies"
+    allow:
+      - dependency-type: "production"
+
+# Security vulnerability alerts
+version: 2
+updates:
+  # Enable security updates for Python packages
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "security-team"
+      - "maintainer-1"
+    assignees:
+      - "security-team"
+    commit-message:
+      prefix: "security"
+      include: "scope"
+    labels:
+      - "security"
+      - "dependencies"
+      - "python"
+    allow:
+      - dependency-type: "production"
+      - dependency-type: "development"
+
+  # Enable security updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "security-team"
+      - "maintainer-1"
+    assignees:
+      - "security-team"
+    commit-message:
+      prefix: "security"
+      include: "scope"
+    labels:
+      - "security"
+      - "github-actions"
+      - "ci"
+    allow:
+      - dependency-type: "production"
+
+# Group updates to reduce noise
+groups:
+  # Group Python security updates
+  python-security:
+    patterns:
+      - "cryptography*"
+      - "pyopenssl*"
+      - "requests*"
+      - "urllib3*"
+      - "certifi*"
+    dependency-type: "production"
+    update-types:
+      - "version-update:semver-patch"
+      - "version-update:semver-minor"
+
+  # Group development dependencies
+  python-dev:
+    patterns:
+      - "pytest*"
+      - "black*"
+      - "flake8*"
+      - "mypy*"
+      - "bandit*"
+      - "safety*"
+    dependency-type: "development"
+    update-types:
+      - "version-update:semver-patch"
+      - "version-update:semver-minor"
+
+# Ignore certain dependencies
+ignore:
+  # Ignore development dependencies that don't need frequent updates
+  - dependency-name: "pytest"
+    update-types: ["version-update:semver-patch"]
+  - dependency-name: "black"
+    update-types: ["version-update:semver-patch"]
+  - dependency-name: "flake8"
+    update-types: ["version-update:semver-patch"]
+  - dependency-name: "mypy"
+    update-types: ["version-update:semver-patch"]
+
+  # Ignore stable dependencies that don't need frequent updates
+  - dependency-name: "langchain-core"
+    update-types: ["version-update:semver-patch"]
+  - dependency-name: "anthropic"
+    update-types: ["version-update:semver-patch"]
+
+# Review requirements
+reviewers:
+  - "security-team"
+  - "maintainer-1"
+  - "maintainer-2"
+
+# Assignees for different types of updates
+assignees:
+  security:
+    - "security-team"
+  dependencies:
+    - "maintainer-1"
+  ci:
+    - "maintainer-2"
+
+# Labels for different types of updates
+labels:
+  security:
+    - "security"
+    - "dependencies"
+  dependencies:
+    - "dependencies"
+    - "python"
+  ci:
+    - "github-actions"
+    - "ci"
+  docker:
+    - "docker"
+    - "dependencies"

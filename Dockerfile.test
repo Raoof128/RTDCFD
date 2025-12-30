@@ -1,0 +1,41 @@
+# Testing Dockerfile for CI/CD
+FROM python:3.11-slim
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    LOG_LEVEL=DEBUG
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirements.txt requirements-dev.txt ./
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt && \
+    pip install -r requirements-dev.txt
+
+# Create non-root user
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+# Create necessary directories
+RUN mkdir -p test-results logs reports storage data && \
+    chown -R appuser:appuser /app
+
+# Copy application code
+COPY . .
+
+# Switch to non-root user
+USER appuser
+
+# Test command
+CMD ["python", "-m", "pytest", "tests/", "-v", "--tb=short", "--junitxml=test-results/junit.xml", "--html=test-results/report.html"]

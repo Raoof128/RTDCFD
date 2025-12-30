@@ -1,0 +1,145 @@
+# Semgrep configuration for security scanning
+rules:
+  - id: hardcoded-secret
+    pattern: |
+      (password|secret|key|token|api_key|private_key|access_key)\s*=\s*["'][^"']+["']
+    message: Hardcoded secret detected
+    severity: ERROR
+    languages: [python]
+
+  - id: dangerous-exec
+    pattern: |
+      (system|exec|eval|subprocess\.call|os\.system|os\.popen)\s*\(
+    message: Dangerous execution function detected
+    severity: WARNING
+    languages: [python]
+
+  - id: sql-injection
+    pattern: |
+      (execute|executemany|executescript)\s*\([^)]*\+[^)]*["']%s["']
+    message: Potential SQL injection vulnerability
+    severity: ERROR
+    languages: [python]
+
+  - id: command-injection
+    pattern: |
+      subprocess\.(run|call|Popen)\s*\([^)]*\+[^)]*["']
+    message: Potential command injection vulnerability
+    severity: ERROR
+    languages: [python]
+
+  - id: path-traversal
+    pattern: |
+      (open|file)\s*\([^)]*\+[^)]*\.\./
+    message: Potential path traversal vulnerability
+    severity: ERROR
+    languages: [python]
+
+  - id: weak-crypto
+    pattern: |
+      (hashlib\.md5|hashlib\.sha1|crypt\.crypt)\s*\(
+    message: Weak cryptographic algorithm detected
+    severity: WARNING
+    languages: [python]
+
+  - id: insecure-random
+    pattern: |
+      random\.(random|randint|randrange)\s*\(
+    message: Insecure random number generator detected
+    severity: WARNING
+    languages: [python]
+
+  - id: insecure-tempfile
+    pattern: |
+      tempfile\.mktemp\s*\(
+    message: Insecure temporary file creation detected
+    severity: WARNING
+    languages: [python]
+
+  - id: debug-print
+    pattern: |
+      print\s*\([^)]*debug|DEBUG
+    message: Debug print statement detected
+    severity: INFO
+    languages: [python]
+
+  - id: assert-usage
+    pattern: |
+      assert\s+
+    message: Assert statement detected (may be disabled in production)
+    severity: INFO
+    languages: [python]
+
+  - id: pickle-usage
+    pattern: |
+      pickle\.(load|loads|dump|dumps)\s*\(
+    message: Pickle usage detected (potential security risk)
+    severity: WARNING
+    languages: [python]
+
+  - id: eval-usage
+    pattern: |
+      eval\s*\(
+    message: Eval usage detected (potential security risk)
+    severity: ERROR
+    languages: [python]
+
+  - id: shell-true
+    pattern: |
+      shell\s*=\s*True
+    message: Shell=True detected (potential security risk)
+    severity: WARNING
+    languages: [python]
+
+  - id: hardcoded-url
+    pattern: |
+      https?://[^\s"']+
+    message: Hardcoded URL detected
+    severity: INFO
+    languages: [python]
+
+  - id: hardcoded-ip
+    pattern: |
+      \b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b
+    message: Hardcoded IP address detected
+    severity: INFO
+    languages: [python]
+
+  - id: file-permissions
+    pattern: |
+      os\.chmod\s*\([^)]*0o[0-7]{3}
+    message: File permissions detected
+    severity: INFO
+    languages: [python]
+
+  - id: network-request
+    pattern: |
+      (requests\.|urllib\.|httpx\.)\.(get|post|put|delete|patch)\s*\(
+    message: Network request detected
+    severity: INFO
+    languages: [python]
+
+  - id: environment-variable
+    pattern: |
+      os\.environ\[["'][^"']+["']\]|os\.getenv\s*\(
+    message: Environment variable access detected
+    severity: INFO
+    languages: [python]
+
+# Exclude patterns
+exclude:
+  - tests/
+  - docs/
+  - build/
+  - dist/
+  - __pycache__/
+  - .git/
+  - .tox/
+  - venv/
+  - .venv/
+
+# Severity thresholds
+severity:
+  ERROR: # Block commit
+  WARNING: # Require review
+  INFO: # Informational only

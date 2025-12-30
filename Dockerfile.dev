@@ -1,0 +1,59 @@
+# Development Dockerfile with hot reload and debugging capabilities
+FROM python:3.11-slim
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    FLASK_ENV=development \
+    LOG_LEVEL=DEBUG
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies for development
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    vim \
+    nano \
+    htop \
+    netcat \
+    telnet \
+    tree \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python development dependencies
+COPY requirements.txt requirements-dev.txt ./
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt && \
+    pip install -r requirements-dev.txt
+
+# Install additional development tools
+RUN pip install \
+    ipython \
+    jupyter \
+    notebook \
+    watchdog \
+    python-dotenv
+
+# Create non-root user
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+# Create necessary directories
+RUN mkdir -p logs reports storage data test-results && \
+    chown -R appuser:appuser /app
+
+# Copy application code
+COPY . .
+
+# Switch to non-root user
+USER appuser
+
+# Expose ports
+EXPOSE 8501 8080 8081 8082
+
+# Development command with hot reload
+CMD ["python", "-m", "pytest", "tests/", "-v", "--tb=short"]

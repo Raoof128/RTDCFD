@@ -1,0 +1,297 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autonomous-multi-agent-simulation"
+version = "1.0.0"
+description = "A production-ready agentic AI security testing framework for Australian critical infrastructure scenarios"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Autonomous Multi-Agent Team", email = "team@example.com"}
+]
+maintainers = [
+    {name = "Autonomous Multi-Agent Team", email = "team@example.com"}
+]
+keywords = [
+    "cybersecurity",
+    "multi-agent",
+    "simulation",
+    "red-team",
+    "blue-team",
+    "artificial-intelligence",
+    "langchain",
+    "mitre-attack",
+    "soci-act",
+    "critical-infrastructure"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "langchain>=0.3.0",
+    "langchain-anthropic>=0.1.0",
+    "langchain-community>=0.3.0",
+    "anthropic>=0.8.0",
+    "pydantic-settings>=2.0.0",
+    "pydantic>=2.4.0",
+    "streamlit>=1.28.0",
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+    "requests>=2.31.0",
+    "cryptography>=41.0.0",
+    "python-dotenv>=1.0.0",
+    "rich>=13.6.0",
+    "typer>=0.9.0",
+    "websockets>=12.0",
+    "chromadb>=0.4.0",
+    "faiss-cpu>=1.7.0",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "plotly>=5.17.0",
+    "psutil>=5.9.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-mock>=3.12.0",
+    "pytest-cov>=4.1.0",
+    "pytest-xdist>=3.3.0",
+    "pytest-html>=4.1.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.7.0",
+    "pylint>=3.0.0",
+    "bandit>=1.7.0",
+    "safety>=2.3.0",
+    "pre-commit>=3.5.0",
+    "tox>=4.11.0",
+    "sphinx>=7.1.0",
+    "sphinx-rtd-theme>=1.3.0",
+    "myst-parser>=2.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/example/autonomous-multi-agent-simulation"
+Documentation = "https://autonomous-multi-agent-simulation.readthedocs.io/"
+Repository = "https://github.com/example/autonomous-multi-agent-simulation.git"
+"Bug Tracker" = "https://github.com/example/autonomous-multi-agent-simulation/issues"
+Changelog = "https://github.com/example/autonomous-multi-agent-simulation/blob/main/CHANGELOG.md"
+
+[project.scripts]
+# Main scripts
+main = "python main.py"
+validate = "python main.py --validate-config"
+test = "pytest"
+lint = "flake8 agents/ orchestration/ utils/ scenarios/"
+format = "black agents/ orchestration/ utils/ scenarios/"
+type-check = "mypy agents/ orchestration/ utils/ scenarios/"
+security-check = "bandit -r agents/ orchestration/ utils/ scenarios/"
+coverage = "pytest --cov=agents --cov=orchestration --cov=utils --cov=scenarios --cov-report=html"
+
+# Development scripts
+dev-install = "pip install -e .[dev]"
+dev-test = "pytest -v --cov=agents --cov=orchestration --cov=utils --cov=scenarios"
+dev-lint = "flake8 agents/ orchestration/ utils/ scenarios/ && mypy agents/ orchestration/ utils/ scenarios/"
+dev-format = "black agents/ orchestration/ utils/ scenarios/ && isort agents/ orchestration/ utils/ scenarios/"
+dev-security = "bandit -r agents/ orchestration/ utils/ scenarios/ && safety check"
+dev-docs = "sphinx-build -b html docs/ docs/_build/html"
+
+# Scenario scripts
+scenarios = "python -c 'import scenarios; print(scenarios.get_available_scenarios())'"
+validate-scenarios = "python -c 'import scenarios; scenarios.validate_all_scenarios()'"
+
+# Dashboard scripts
+dashboard = "streamlit run dashboard/streamlit_ui.py"
+dashboard-dev = "STREAMLIT_SERVER_PORT=8501 streamlit run dashboard/streamlit_ui.py"
+
+# Testing scripts
+test-unit = "pytest tests/test_scenarios.py tests/test_basic_functionality.py"
+test-integration = "pytest tests/test_config.py"
+test-all = "pytest tests/ -v"
+test-coverage = "pytest --cov=agents --cov=orchestration --cov=utils --cov=scenarios --cov-report=term-missing"
+
+# Quality scripts
+quality-check = "python -m py_compile agents/**/*.py orchestration/**/*.py utils/**/*.py scenarios/**/*.py dashboard/**/*.py"
+quality-format = "black --check agents/ orchestration/ utils/ scenarios/ dashboard/"
+quality-imports = "isort --check-only agents/ orchestration/ utils/ scenarios/ dashboard/"
+
+# Security scripts
+security-audit = "bandit -r agents/ orchestration/ utils/ scenarios/ && safety check && pip-audit"
+security-deps = "pip-audit --requirement requirements.txt"
+
+# Build scripts
+build = "python -m build"
+dist = "python -m twine check dist/*"
+
+# Documentation scripts
+docs-build = "sphinx-build -b html docs/ docs/_build/html"
+docs-serve = "python -m http.server 8000 --directory docs/_build/html"
+docs-clean = "rm -rf docs/_build/"
+
+# Utility scripts
+clean = "find . -type d -name __pycache__ -delete && find . -type f -name '*.pyc' -delete"
+setup-dev = "python -m venv venv && source venv/bin/activate && pip install -e .[dev]"
+install-hooks = "pre-commit install"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agents*", "orchestration*", "utils*", "scenarios*", "dashboard*", "mcp_servers*"]
+exclude = ["tests*", "docs*", "scripts*", "examples*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.py", "*.md", "*.txt", "*.yml", "*.yaml", "*.json", "*.toml"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["agents", "orchestration", "utils", "scenarios", "dashboard", "mcp_servers"]
+known_third_party = ["langchain", "anthropic", "pydantic", "streamlit", "fastapi"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "agents.*",
+    "orchestration.*",
+    "utils.*",
+    "scenarios.*",
+    "dashboard.*",
+    "mcp_servers.*"
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "unit: Unit tests for individual components",
+    "integration: Integration tests for component interactions",
+    "scenario: Tests for scenario functionality",
+    "validation: Tests for validation utilities",
+    "slow: Tests that take longer to run",
+    "network: Tests that require network access"
+]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning"
+]
+
+[tool.coverage.run]
+source = ["agents", "orchestration", "utils", "scenarios", "dashboard", "mcp_servers"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/.venv/*",
+    "*/build/*",
+    "*/dist/*"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod"
+]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503", "E501"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".eggs",
+    "*.egg-info",
+    ".venv",
+    "venv"
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "venv", ".venv", "build", "dist"]
+skips = ["B101", "B601"]
+
+[tool.pylint.messages_control]
+disable = [
+    "C0330",  # Wrong hanging indentation
+    "C0326",  # Badly placed whitespace
+    "R0903",  # Too many public methods
+    "R0913",  # Too many arguments
+    "R0914",  # Too many local variables
+    "R0915",  # Too many statements
+    "R0912",  # Too many branches
+    "R0911",  # Too many return statements
+]
+
+[tool.pylint.format]
+max-line-length = 88

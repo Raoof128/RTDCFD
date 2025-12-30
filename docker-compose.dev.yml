@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  # Development service with hot reload
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: simulation-dev
+    ports:
+      - "8501:8501"  # Streamlit dashboard
+      - "8080:8080"  # MCP server
+      - "8081:8081"  # Red team MCP
+      - "8082:8082"  # Blue team MCP
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - LOG_LEVEL=DEBUG
+      - ENABLE_CONSOLE_OUTPUT=true
+      - SIMULATION_MODE_ONLY=true
+      - ENABLE_SAFETY_CHECKS=true
+      - AUDIT_LOGGING=true
+      - PYTHONPATH=/app
+      - FLASK_ENV=development
+    volumes:
+      - .:/app
+      - ./storage:/app/storage
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+      - ./data:/app/data
+      - /app/__pycache__
+    networks:
+      - simulation-network
+    restart: unless-stopped
+    command: >
+      sh -c "
+        python -m pytest tests/ -v --tb=short &&
+        python main.py --scenario soci_energy_grid --dashboard
+      "
+
+  # Development database
+  postgres-dev:
+    image: postgres:15-alpine
+    container_name: simulation-postgres-dev
+    environment:
+      - POSTGRES_DB=simulation_dev
+      - POSTGRES_USER=simulation
+      - POSTGRES_PASSWORD=dev123
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    ports:
+      - "5433:5432"
+    networks:
+      - simulation-network
+    restart: unless-stopped
+
+  # Development Redis
+  redis-dev:
+    image: redis:7-alpine
+    container_name: simulation-redis-dev
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - simulation-network
+    restart: unless-stopped
+
+  # Development tools
+  tools:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: simulation-tools
+    volumes:
+      - .:/app
+    networks:
+      - simulation-network
+    profiles:
+      - tools
+    command: >
+      sh -c "
+        echo 'Available commands:' &&
+        echo '  pytest: Run tests' &&
+        echo '  black: Format code' &&
+        echo '  flake8: Lint code' &&
+        echo '  mypy: Type check' &&
+        echo '  bandit: Security scan' &&
+        echo '  safety: Dependency scan' &&
+        echo '  python main.py --validate-config: Validate configuration' &&
+        echo '  python main.py --list-scenarios: List scenarios' &&
+        echo '  python main.py --scenario <name>: Run scenario' &&
+        echo '  streamlit run dashboard/streamlit_ui.py: Start dashboard' &&
+        echo '' &&
+        echo 'Usage: docker-compose -f docker-compose.dev.yml run --rm tools <command>'
+      "
+
+networks:
+  simulation-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+
+volumes:
+  postgres_dev_data:
+  redis_dev_data:
