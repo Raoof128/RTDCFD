@@ -252,10 +252,12 @@ jobs:
       
     - name: Login to Docker Hub
       if: github.event_name != 'pull_request'
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      run: |
+        if [ -n "${{ secrets.DOCKER_USERNAME }}" ] && [ -n "${{ secrets.DOCKER_PASSWORD }}" ]; then
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        else
+          echo "Docker credentials not available, skipping login"
+        fi
         
     - name: Extract metadata
       id: meta
@@ -273,7 +275,7 @@ jobs:
       with:
         context: .
         platforms: linux/amd64,linux/arm64
-        push: ${{ github.event_name != 'pull_request' && secrets.DOCKER_USERNAME }}
+        push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
