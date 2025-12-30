@@ -40,8 +40,7 @@ EXPOSE 8501
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD python -c "from utils.validation_standalone import check_system_health; check_system_health()" || \
-    curl -f http://localhost:8501/health || exit 1
+    CMD curl -f http://localhost:8501/health || exit 1
 
 # Default command
 CMD ["python", "main.py", "--scenario", "soci_energy_grid", "--dashboard"]
