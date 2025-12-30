@@ -259,25 +259,19 @@ jobs:
           echo "Docker credentials not available, skipping login"
         fi
         
-    - name: Extract metadata
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: autonomous-multi-agent-simulation
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
         context: .
         platforms: linux/amd64,linux/arm64
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
+        tags: |
+          ${{ secrets.DOCKER_USERNAME && format('{0}/autonomous-multi-agent-simulation:main', secrets.DOCKER_USERNAME) || 'autonomous-multi-agent-simulation:main' }}
+          ${{ secrets.DOCKER_USERNAME && format('{0}/autonomous-multi-agent-simulation:latest', secrets.DOCKER_USERNAME) || 'autonomous-multi-agent-simulation:latest' }}
+        labels: |
+          org.opencontainers.image.title=Autonomous Multi-Agent Simulation
+          org.opencontainers.image.description=Red/Blue Team Cybersecurity Simulation System
+          org.opencontainers.image.source=https://github.com/Raoof128/RTDCFD
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
